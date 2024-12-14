@@ -1,4 +1,4 @@
-// /src/components/OrderTracking.jsx
+// OrderTracking.jsx
 import { motion } from "framer-motion";
 export default function OrderTracking({ status, userName }) {
   const stages = ["Preparing", "Ready for Pickup"];

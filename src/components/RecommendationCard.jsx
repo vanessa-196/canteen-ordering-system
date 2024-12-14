@@ -1,33 +1,34 @@
+//Recommendation.jsx
 import { ShoppingCartIcon } from '@heroicons/react/24/solid';
+import { useState } from 'react';
 
-export default function RecommendationCard({ item }) {
+export default function RecommendationCard({ item, onAddToCart }) {
+  const [quantity, setQuantity] = useState(1); // Setting the defaqult quantity to 1
+
+  const handleIncrease = () => setQuantity((prevQuantity) => Math.min(prevQuantity + 1, item.quantity)); // Ensuring the quantity doesn't exceed available stock
+  const handleDecrease = () => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1)); // Prevent negative or zero quantity
+
   const handleAddToCart = () => {
-    // Function to add item to cart (you'll implement this later)
-    console.log(`${item.food_name} added to cart`);
+    onAddToCart(item, quantity); // Triggering the add-to-cart function passed from parent with the selected quantity
   };
 
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition duration-300 transform hover:scale-105">
-      {/* Displaying image */}
       <img src={item.image} alt={item.food_name} className="w-full h-32 object-cover" />
       
       <div className="p-4">
-        {/* Displaying the food name */}
         <h2 className="text-lg font-bold">{item.food_name}</h2>
-
-        {/* Displaying price */}
         <p className="text-xl font-semibold">{item.price} GHC</p>
-        
-        {/* Optionally display quantity */}
-        <p className="text-gray-600">Quantity: {item.quantity}</p>
-        
-        {/* Customization options if available */}
+        <p className="text-gray-600">Quantity Available: {item.quantity}</p>
+
         <div className="mt-4">
           <h3 className="text-sm font-medium">Customize:</h3>
-          {item.customization_options ? (
+          {item.customization_options && item.customization_options.length > 0 ? (
             <ul className="space-y-2">
-              {item.customization_options.split(',').map((option, index) => (
-                <li key={index} className="text-gray-700 text-sm">{option}</li>
+              {item.customization_options.map((option, index) => (
+                <li key={index} className="text-gray-700 text-sm">
+                  {option.option} (+{option.price} GHC)
+                </li>
               ))}
             </ul>
           ) : (
@@ -35,7 +36,30 @@ export default function RecommendationCard({ item }) {
           )}
         </div>
 
-        {/* Add to cart button */}
+        {/* Quantity Selector */}
+        <div className="flex items-center mt-4">
+          <button
+            onClick={handleDecrease}
+            className="px-2 py-1 bg-gray-300 text-white rounded-md"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(Math.max(1, Math.min(e.target.value, item.quantity)))}
+            className="mx-2 w-12 text-center border rounded-md"
+            min="1"
+            max={item.quantity}
+          />
+          <button
+            onClick={handleIncrease}
+            className="px-2 py-1 bg-gray-300 text-white rounded-md"
+          >
+            +
+          </button>
+        </div>
+
         <button 
           onClick={handleAddToCart} 
           className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">

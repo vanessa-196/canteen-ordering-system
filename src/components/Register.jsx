@@ -14,7 +14,7 @@ const Register = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
 
-  // Regular expression for email validation
+  // This is the expression for email validation
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   // Password validation (min length of 6 characters)
@@ -62,9 +62,9 @@ const Register = () => {
         lastName: "",
         email: "",
         password: "",
-        role: "Student", // Reset role to default
-      }); // Clear form after successful registration
-      setTimeout(() => navigate("/login"), 2000); // Redirect to the login page
+        role: "Student", // Reseting role to default
+      }); // This is to clear form after successful registration
+      setTimeout(() => navigate("/login"), 2000); // This is to redirect to the login page
     } catch (err) {
       setError(err.message);
     } finally {
